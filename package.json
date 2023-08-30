@@ -1,0 +1,23 @@
+{
+  "name": "canada_mart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amanyadav333/canada_mart_backend.git"
+  },
+  "keywords": [
+    "canada_mart"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amanyadav333/canada_mart_backend/issues"
+  },
+  "homepage": "https://github.com/amanyadav333/canada_mart_backend#readme"
+}
