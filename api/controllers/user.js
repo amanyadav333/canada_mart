@@ -4,7 +4,7 @@ const executeQry = require("../connection/executeSql");
 const validation = require("../validation/user_validation");
 const env = require("dotenv").config();
 const { off, query } = require("../connection/connection");
-const { user } = require("../utils/constant");
+const { user,dbTable } = require("../utils/constant");
 let path = require("dotenv").config({
     path: __dirname + "../env",
 });
@@ -21,7 +21,7 @@ const login = async (req, res, next) => {
         let validateUSerBool=validation.loginValidation(mobileNumber,email);
         if(validateUSerBool==""){
             try{
-                usr_qry = `SELECT * FROM user WHERE ${user.mobile}= '${mobileNumber}' OR ${user.email}= '${email}'`;
+                usr_qry = `SELECT * FROM ${dbTable.users} WHERE ${user.mobile}= '${mobileNumber}' OR ${user.email}= '${email}'`;
                 let result = await executeQry(usr_qry);
                 if(result.length==0){
                     res.statusCode = 201;
@@ -58,23 +58,26 @@ const signup = async (req, res, next) => {
 
     if (req.method == "POST") {
         console.log(req.body);
-        let firstName = req.body.first_name;
-        let lastName = req.body.last_name;
+        // let firstName = req.body.first_name;
+        let companyName = req.body.company_name;
+        // let lastName = req.body.last_name;
         let email = req.body.email;
         let mobile = req.body.mobile;
         let countryCode = req.body.country_code;
         let deviceToken = req.body.device_token;
         let result = '';
         const schema = Joi.object().keys({
-            firstName: Joi.string().max(30).required(),
-            lastName: Joi.string().max(30).required(),
+            // firstName: Joi.string().max(30).required(),
+            // lastName: Joi.string().max(30).required(),
+            companyName: Joi.string().max(100).required(),
             email: Joi.string().max(50).required(),
             mobile: Joi.string().max(12).required(),
             countryCode: Joi.string().max(5).required(),
         });
         const { error, value } = schema.validate({
-            firstName: req.body.first_name,
-            lastName: req.body.last_name,
+            // firstName: req.body.first_name,
+            // lastName: req.body.last_name,
+            companyName: req.body.company_name,
             email: req.body.email,
             mobile: req.body.mobile,
             countryCode: req.body.country_code,
@@ -88,15 +91,16 @@ const signup = async (req, res, next) => {
         }else{
             try {
                 // checking for existing users  
-                result = `SELECT * FROM user WHERE ${user.mobile}= '${mobile}' OR ${user.email}= '${email}'`;
+                result = `SELECT * FROM ${dbTable.users} WHERE ${user.mobile}= '${mobile}' OR ${user.email}= '${email}'`;
                 result = await executeQry(result);
                 if(result.length==0){
                     var dateTime = new Date();
                     let date=dateTime.toISOString().split('T')[0] + ' '+ dateTime.toTimeString().split(' ')[0];
                     // add user
-                    result =`INSERT INTO user (${user.firstName},${user.lastName},${user.email},${user.mobile},
+                    result =`INSERT INTO ${dbTable.users} (${user.companyName},${user.email},${user.mobile},
                         ${user.countryCode},${user.created},${user.updated},${user.deviceToken})
-                        values('${firstName}', '${lastName}','${email}', '${mobile}', '${countryCode}' ,
+
+                        values('${companyName}','${email}', '${mobile}', '${countryCode}' ,
                         '${date}','${date}', '${deviceToken==undefined?"":deviceToken}') `;
 
                     result = await executeQry(result);

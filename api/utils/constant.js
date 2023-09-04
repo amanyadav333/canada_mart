@@ -1,6 +1,11 @@
+class DatabaseTable{
+    static users="users";
+}
+
 class UserTable{
     static firstName="first_name";
     static lastName="last_name";
+    static companyName="company_name";
     static mobile="mobile";
     static email="email";
     static countryCode="country_code";
@@ -13,5 +18,6 @@ class UserTable{
 
 
 module.exports = {
-    user:UserTable
+    user:UserTable,
+    dbTable:DatabaseTable
 };
