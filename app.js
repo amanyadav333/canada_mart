@@ -10,9 +10,7 @@ const PORT=process.env.PORT || 8036;
 
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(logger("dev"));
-app.use(
-    cors({origin: ["http://localhost:"+PORT, "https://canada-mart.onrender.com"]})
-  );
+app.use(cors());
 
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
