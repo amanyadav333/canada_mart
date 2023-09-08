@@ -3,6 +3,7 @@ const express = require("express");
 const path = require('path');
 const multer = require('multer');
 const user  = require("../controllers/user");
+const product  = require("../controllers/product");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -11,6 +12,7 @@ router.use(multer().single('file'));
 
 router.post("/signup", user.signup);
 router.post("/login", user.login);
+router.get("/getAllProducts", product.getAllProducts);
 
 module.exports = {
   "routes": router
