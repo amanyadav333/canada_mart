@@ -100,7 +100,6 @@ const signup = async (req, res, next) => {
                     // add user
                     result =`INSERT INTO ${dbTable.users} (${user.companyName},${user.email},${user.mobile},
                         ${user.countryCode},${user.created},${user.updated},${user.deviceToken},${user.unique_id})
-
                         values('${companyName}','${email}', '${mobile}', '${countryCode}' ,
                         '${date}','${date}', '${deviceToken==undefined?"":deviceToken}','${unique_id}')`;
 

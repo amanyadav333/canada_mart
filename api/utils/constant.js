@@ -2,6 +2,15 @@ class DatabaseTable{
     static users="Users";
     static category="Category";
     static products="Products";
+    static enquiry="Enquiry";
+}
+
+class EnquiryTable{
+    static id="id";
+    static name="name";
+    static description="description";
+    static mobile="mobile";
+    static userId="user_id";
 }
 
 class UserTable{
@@ -41,5 +50,6 @@ module.exports = {
     user:UserTable,
     products:ProductsTable,
     category:CategoryTable,
+    enquiry:EnquiryTable,
     dbTable:DatabaseTable
 };
