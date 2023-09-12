@@ -18,7 +18,7 @@ const getAllProducts = async (req, res, next) => {
                 res.statusCode = 200;
                 res.json({
                     status: "true",
-                    data: result[0]
+                    data: result
                 })
             }
         }catch(error){
