@@ -15,6 +15,9 @@ router.post("/signup", user.signup);
 router.post("/login", user.login);
 router.post("/enquiry", other.userEnquiry);
 router.get("/getAllProducts", product.getAllProducts);
+router.post("/addProducts", product.addProducts);
+router.post("/sentOtp", other.sentOTP);
+router.post("/getUserProfile", user.getUserProfile);
 
 module.exports = {
   "routes": router

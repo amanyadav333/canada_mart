@@ -129,7 +129,55 @@ const signup = async (req, res, next) => {
     }
 }
 
+
+const getUserProfile = async (req, res, next) => {
+    if (req.method == "POST") {
+
+        let user_id = req.body.user_id;
+        const schema = Joi.object().keys({
+            user_id: Joi.string().required(),
+        });
+        const { error, value } = schema.validate({
+            user_id: req.body.user_id,
+        }) 
+        if(error){
+            res.statusCode = 401;
+            res.json({
+                status: "false",
+                message: error.details[0].message
+            })
+        }else{
+            try{
+                usr_qry = `SELECT * FROM ${dbTable.users} where id='${user_id}'`;
+                let result = await executeQry(usr_qry);
+                res.statusCode = 200;
+                if(result.length==0){
+                    res.statusCode = 201;
+                    res.json({
+                        status: "false",
+                        message: "No user found"
+                    })
+                }else{
+                    res.statusCode = 200;
+                    res.json({
+                        status: "true",
+                        data: result
+                    })
+                }
+            }catch(error){
+                res.statusCode = 400;
+                console.log('*******'+error.message);        
+                res.json({
+                    status: "false",
+                    message: error
+                })
+            }
+        }
+    }
+}
+
 module.exports = {
     signup: signup,
     login: login,
+    getUserProfile:getUserProfile,
 }

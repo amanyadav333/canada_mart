@@ -2,6 +2,74 @@ const Joi = require("joi");
 const executeQry = require("../connection/executeSql");
 const { category,products,dbTable } = require("../utils/constant");
 
+const addProducts = async (req, res, next) => {
+    if (req.method == "POST") {
+        let name = req.body.name;
+        let description = req.body.description;
+        let price = req.body.price;
+        let quantity = req.body.quantity;
+        let is_product = req.body.is_product;
+        let parent_category_id = req.body.parent_category_id;
+        let child_category_id = req.body.child_category_id;
+        let user_id = req.body.user_id;
+        let result = '';
+        const schema = Joi.object().keys({
+            name: Joi.string().max(100).required(),
+            description: Joi.string().max(255).required(),
+            price: Joi.string().max(10).required(),
+            quantity: Joi.string().max(5).required(),
+            is_product: Joi.string().required(),
+            parent_category_id: Joi.string().required(),
+            child_category_id: Joi.string().required(),
+            user_id: Joi.string().required(),
+        });
+        const { error, value } = schema.validate({
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            quantity: req.body.quantity,
+            is_product: req.body.is_product,
+            parent_category_id: req.body.parent_category_id,
+            child_category_id: req.body.child_category_id,
+            user_id: req.body.user_id,
+        }) 
+        if(error){
+            res.statusCode = 401;
+            res.json({
+                status: "false",
+                message: error.details[0].message
+            })
+        }else{
+            try {
+                var dateTime = new Date();
+                let date=dateTime.toISOString().split('T')[0] + ' '+ dateTime.toTimeString().split(' ')[0];
+                var unique_id=name+dateTime.getMilliseconds;
+                // add user
+                result =`INSERT INTO ${dbTable.products} (${products.name},${products.description},${products.price},
+                    ${products.quantity},${products.isProduct},${products.isActive},${products.created},
+                    ${products.unique_id},${products.parentCategoryId},${products.childCategoryId},${products.userId})
+                    values('${name}','${description}', '${price}', '${quantity}','${is_product}','1','${date}', 
+                    '${unique_id}','${parent_category_id}','${child_category_id}','${user_id}')`;
+
+                result = await executeQry(result);
+                res.statusCode = 200;
+                res.json({
+                    status: "true",
+                    message: "Product add successfully"
+                })
+            } catch (error) {
+                res.statusCode = 400;
+                console.log('*******'+error.message);        
+                res.json({
+                    status: "false",
+                    message: error
+                })
+
+            }
+        }
+    }
+}
+
 const getAllProducts = async (req, res, next) => {
     if (req.method == "GET") {
         try{
@@ -34,4 +102,5 @@ const getAllProducts = async (req, res, next) => {
 
 module.exports = {
     getAllProducts: getAllProducts,
+    addProducts:addProducts,
 }

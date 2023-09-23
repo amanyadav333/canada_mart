@@ -5,6 +5,7 @@ const authRoutes = require("./api/routes/auth-routes");
 var logger = require("morgan");
 var cors = require('cors');
 var app = express();
+require('dotenv').config();
 
 const PORT=process.env.PORT || 8036;
 
@@ -28,6 +29,8 @@ app.use(authRoutes.routes);
 var server = app.listen(PORT, function () {
    var host = server.address().address
    var port = server.address().port
+   
+//    console.log(process.env.TWILIO_ACCOUNT_SID);
 
    console.log("Example app listening at http://%s:%s", host, port)
 })
