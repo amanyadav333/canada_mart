@@ -2,20 +2,18 @@
 let loginValidation = function loginValidation(mobileNumber,email) {
     if(mobileNumber!=undefined){
         if(mobileNumber==""){
-            if(email!=undefined){
-                if(email!=""){
-                    return "";
-                }else{
-                    return "email is required";
-                }
-            }else{
-                return "Field is required";
-            }
+            return "mobile is required";
+        }else{
+            return "";
+        }
+    }else if(email!=undefined){
+        if(email==""){
+            return "email is required";
         }else{
             return "";
         }
     }else{
-        return "Field is required";
+        return "mobile or email is required";
     }
 };
 

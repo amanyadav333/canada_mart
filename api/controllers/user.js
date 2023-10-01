@@ -13,11 +13,10 @@ const fs = require('fs');
 
 const login = async (req, res, next) => {
     if (req.method == "POST") {
-        console.log(user.firstName);
         let mobileNumber = req.body.mobile;
         let email = req.body.email;
-        console.log(mobileNumber);
-        console.log(email);
+        console.log("mobile"+mobileNumber);
+        console.log("email"+email);
         let validateUSerBool=validation.loginValidation(mobileNumber,email);
         if(validateUSerBool==""){
             try{
