@@ -165,6 +165,7 @@ const signup = async (req, res, next) => {
             })
         }else{
             try {
+                // console.log('*******'+error.message);        
                 // checking for existing users  
                 let result = `SELECT * FROM ${dbTable.users} WHERE ${user.mobile}= '${mobile}' OR ${user.email}= '${email}'`;
                 result = await executeQry(result);
@@ -172,13 +173,24 @@ const signup = async (req, res, next) => {
                     var unique_id=name+mobile+email;
                     var dateTime = new Date();
                     let date=dateTime.toISOString().split('T')[0] + ' '+ dateTime.toTimeString().split(' ')[0];
-                    // add user
-                    let result2 =`INSERT INTO ${dbTable.users} (${user.name},${user.email},${user.mobile},
-                        ${user.countryCode},${user.created},${user.updated},${user.deviceToken},${user.unique_id},${user.isCompany},${user.role},${user.parentUserID})
-                        values('${name}','${email}', '${mobile}', '${countryCode}' ,
-                        '${date}','${date}', '${deviceToken==undefined?"":deviceToken}','${unique_id}','${is_company}','${role}','${parent_user_id}')`;
+                    if(is_company){
+// add user
+                        let result2 =`INSERT INTO ${dbTable.users} (${user.name},${user.email},${user.mobile},
+                            ${user.countryCode},${user.created},${user.updated},${user.deviceToken},${user.unique_id},${user.isCompany},${user.role})
+                            values('${name}','${email}', '${mobile}', '${countryCode}' ,
+                            '${date}','${date}', '${deviceToken==undefined?"":deviceToken}','${unique_id}','${is_company}','${role}')`;
 
-                    result = await executeQry(result2);
+                        result = await executeQry(result2);
+                    }else{
+                        // add user
+                        let result2 =`INSERT INTO ${dbTable.users} (${user.name},${user.email},${user.mobile},
+                            ${user.countryCode},${user.created},${user.updated},${user.deviceToken},${user.unique_id},${user.isCompany},${user.role},${user.parentUserID})
+                            values('${name}','${email}', '${mobile}', '${countryCode}' ,
+                            '${date}','${date}', '${deviceToken==undefined?"":deviceToken}','${unique_id}','${is_company}','${role}','${parent_user_id}')`;
+
+                        result = await executeQry(result2);
+                    }
+                    
                     result = `SELECT * FROM ${dbTable.users} WHERE ${user.mobile}= '${mobile}' OR ${user.email}= '${email}'`;
                     result = await executeQry(result);
                     res.statusCode = 200;
@@ -197,7 +209,7 @@ const signup = async (req, res, next) => {
                 }
             } catch (error) {
                 res.statusCode = 400;
-                console.log('*******'+error.message);        
+                console.log('*******'+error);        
                 res.json({
                     status: false,
                     message: error
