@@ -3,6 +3,55 @@ class DatabaseTable{
     static category="Category";
     static products="Products";
     static enquiry="Enquiry";
+    static bussinessDetail="BussinessDetail";
+    static userManagement="UserManagement";
+    static typeService="TypeService";
+    static taxInformation="TaxInformation";
+}
+
+class TaxInformationTable{
+    static id="id";
+    static userId="user_id";
+    static businessNumber="business_number";
+    static issuedDate="issued_date";
+}
+
+class TypeServiceTable{
+    static id="id";
+    static userId="user_id";
+    static businessType="business_type";
+    static paymentType="payment_type";
+    static startWeek="start_week";
+    static endWeek="end_week";
+    static startTime="start_time";
+    static endTime="end_time";
+    static excludeCity="exclude_city";
+    static includeCity="include_city";
+    static description="description";
+}
+
+class UserManagementTable{
+    static id="id";
+    static userId="user_id";
+    static name="name";
+    static mobile="mobile";
+    static created="created_at";
+    static email="email";
+    static role="role";
+}
+
+class BussinessDetailTable{
+    static id="id";
+    static userId="user_id";
+    static companyName="company_name";
+    static mobile="mobile";
+    static created="created_at";
+    static address="address";
+    static country="country";
+    static state="state";
+    static city="city";
+    static image="image";
+    static logo="logo";
 }
 
 class EnquiryTable{
@@ -16,11 +65,15 @@ class EnquiryTable{
 class UserTable{
     static id="id";
     static unique_id="unique_id";
-    static companyName="company_name";
+    static name="name";
     static mobile="mobile";
+    static profile="profile";
     static email="email";
     static countryCode="country_code";
+    static parentUserID="parent_user_id";
     static isActive="is_active";
+    static isCompany="is_company";
+    static role="role";
     static created="created_at";
     static updated="updated_at";
     static deviceToken="device_token";
@@ -51,5 +104,9 @@ module.exports = {
     products:ProductsTable,
     category:CategoryTable,
     enquiry:EnquiryTable,
-    dbTable:DatabaseTable
+    bussiness:BussinessDetailTable,
+    userManagement:UserManagementTable,
+    typeService:TypeServiceTable,
+    taxInformation:TaxInformationTable,
+    dbTable:DatabaseTable,
 };

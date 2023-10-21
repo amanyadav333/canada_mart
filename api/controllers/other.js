@@ -4,8 +4,46 @@ const executeQry = require("../connection/executeSql");
 const { enquiry,user,dbTable } = require("../utils/constant");
 const TWILIO_ACCOUNT_SID = 'AC4cdd5d0b13fd0256fc64a2ddf51c7be3';
 const twilioAccountToken = '4bfc76feb56eca8c740ed953a7a19769';
-// const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(TWILIO_ACCOUNT_SID, twilioAccountToken);
+const {uploadS3} = require("../connection/s3client");
+var AWS = require('aws-sdk');
+let config={
+    accessKeyId: 'AKIA3E4KF3SX3PUOTEN4',
+    secretAccessKey: '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',
+    region: 'ap-south-1'
+  };
+
+const ses = new AWS.SES(config); 
+
+
+const sentEmailOTP = async (req, res, next) => {
+    const params = {
+        Source: "qpqconnect@gmail.com",
+        Destination: {
+          ToAddresses: [
+             "amanyadavlogan@gmail.com"
+          ]
+        },
+        Message:{
+            Body:{
+                Text:{
+                    Charset:"UTF-8",
+                    Data:"Hello"
+                }
+            },
+            Subject:{
+                Charset:"UTF-8",
+                Data:"Hii"
+            }
+        }
+      }
+    try{
+        let tmp=await ses.sendEmail(params).promise();
+        console.log("email sent");
+    }catch(e){
+        console.log(e);
+    }   
+   
+}
 
 const userEnquiry = async (req, res, next) => {
     if (req.method == "POST") {
@@ -64,52 +102,50 @@ const userEnquiry = async (req, res, next) => {
     }
 }
 
-const sentOTP = async (req, res, next) => {
+const uploadFile = async (req, res, next) => {
     if (req.method == "POST") {
-        let message = req.body.message;
-        let mobile = req.body.mobile;
+        let file = req.file;
+        let user_id = req.body.user_id;
         let result = '';
         const schema = Joi.object().keys({
-            message: Joi.string().required(),
-            mobile: Joi.string().max(12).required(),
+            user_id: Joi.string().max(50).required(),
         });
         const { error, value } = schema.validate({
-            message: req.body.message,
-            mobile: req.body.mobile,
-        });
+            user_id: req.body.user_id,
+        }) 
         if(error){
-            res.statusCode = 401;
+            res.statusCode = 201;
             res.json({
-                status: "false",
+                status: false,
                 message: error.details[0].message
             })
         }else{
-           try{
-                const message = await client.messages.create({
-                    body: 'Hello from Node',
-                    to: '+916266991143',
-                    from: '+918085734561',
-                });
-                console.log(message);
+            let url="";
+            if(file!=undefined){
+                var dateTime = new Date();
+                url=await uploadS3(file,"users/"+user_id,"image-"+dateTime.getMilliseconds());
+                console.log(url);
                 res.statusCode = 200;
                 res.json({
-                    status: "true",
-                    message: "enquiry registered successfully"
-                })
-           }catch (error) {
-                res.statusCode = 400;
-                console.log('*******'+error.message);        
+                    status: true,
+                    data:{
+                        "url":url
+                    }
+                }) 
+            }else{
+                res.statusCode = 201;
                 res.json({
-                    status: "false",
-                    message: error
-                })
-
+                    status: false,
+                    message: "File is empty"
+                }) 
             }
-        } 
+        }
     }
 }
 
+
 module.exports = {
     userEnquiry: userEnquiry,
-    sentOTP:sentOTP,
+    sentEmailOTP:sentEmailOTP,
+    uploadFile:uploadFile
 }

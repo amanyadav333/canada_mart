@@ -1,19 +1,31 @@
 
-let loginValidation = function loginValidation(mobileNumber,email) {
-    if(mobileNumber!=undefined){
-        if(mobileNumber==""){
-            return "mobile is required";
+let loginValidation = function loginValidation(mobileNumber,email,isEmail) {
+    if(isEmail!=undefined){
+        if(isEmail=="true"){
+            if(email!=undefined){
+                if(email==""){
+                    return "email is required";
+                }else{
+                    return "";
+                }
+            }else{
+                return "email is required";
+            }
+        }else if(isEmail=="false"){
+            if(mobileNumber!=undefined){
+                if(mobileNumber==""){
+                    return "mobile is required";
+                }else{
+                    return "";
+                }
+            }else{
+                return "mobile is required";
+            }
         }else{
-            return "";
-        }
-    }else if(email!=undefined){
-        if(email==""){
-            return "email is required";
-        }else{
-            return "";
+            return "is_email is required";
         }
     }else{
-        return "mobile or email is required";
+        return "is_email is required";
     }
 };
 
