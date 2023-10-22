@@ -261,7 +261,7 @@ const getCompanyUserList = async (req, res, next) => {
                     res.statusCode = 200;
                     res.json({
                         status: true,
-                        data: result
+                        data: {result}
                     })
                 }
             }catch(error){
