@@ -165,7 +165,8 @@ const signup = async (req, res, next) => {
             })
         }else{
             try {
-                // console.log('*******'+error.message);        
+                console.log('*******'+is_company);        
+                console.log('*******'+parent_user_id);        
                 // checking for existing users  
                 let result = `SELECT * FROM ${dbTable.users} WHERE ${user.mobile}= '${mobile}' OR ${user.email}= '${email}'`;
                 result = await executeQry(result);
@@ -173,7 +174,7 @@ const signup = async (req, res, next) => {
                     var unique_id=name+mobile+email;
                     var dateTime = new Date();
                     let date=dateTime.toISOString().split('T')[0] + ' '+ dateTime.toTimeString().split(' ')[0];
-                    if(is_company){
+                    if(is_company=="true"){
 // add user
                         let result2 =`INSERT INTO ${dbTable.users} (${user.name},${user.email},${user.mobile},
                             ${user.countryCode},${user.created},${user.updated},${user.deviceToken},${user.unique_id},${user.isCompany},${user.role})
@@ -200,11 +201,10 @@ const signup = async (req, res, next) => {
                         data:result[0]
                     })
                 }else{
-                    res.statusCode = 200;
+                    res.statusCode = 201;
                     res.json({
-                        status: true,
+                        status: false,
                         message: "user already registered with this mobile/email",
-                        data:result[0]
                     })
                 }
             } catch (error) {
