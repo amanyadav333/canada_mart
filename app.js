@@ -9,6 +9,7 @@ require('dotenv').config();
 
 const PORT=process.env.PORT || 8036;
 
+
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
 app.use(logger("dev"));
 app.use(cors());
@@ -23,7 +24,7 @@ app.use(function (err, req, res, next) {
     res.render("error");
 });
 //-------------------------------
-app.use(authRoutes.routes);
+app.use("/",authRoutes.routes);
 
 
 var server = app.listen(PORT, function () {
