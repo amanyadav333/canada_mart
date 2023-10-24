@@ -221,7 +221,26 @@ const addBusinessDetail = async (req, res, next) => {
                         message: "Business Detail add successfully"
                     })   
                 }else{
-                    
+                    let usr_qry = `update  ${dbTable.bussinessDetail} SET ${bussiness.companyName} ='${company_name}' , ${bussiness.mobile} ='${mobile}',
+                    ${bussiness.address} ='${address}',${bussiness.country} ='${country}',${bussiness.state} ='${state}',${bussiness.city}='${city}' 
+                    , ${bussiness.logo}='${logo}'  , ${bussiness.image} ='${images}' 
+                    WHERE  ${bussiness.userId} ='${user_id}'`;
+                    let result = await executeQry(usr_qry);
+
+                    if(result.length==0){
+                        res.statusCode = 201;
+                        res.json({
+                            status: false,
+                            message: "Business Detail not update",
+                        })
+                    }else{
+                        res.statusCode = 200;
+                        res.json({
+                            status: true,
+                            message: "Business Detail update",
+                            data: result[0]
+                        })
+                    }
                 }
             } catch (error) {
                 res.statusCode = 401;
