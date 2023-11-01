@@ -4,6 +4,7 @@ const path = require('path');
 const multer = require('multer');
 const user  = require("../controllers/user");
 const product  = require("../controllers/product");
+const category  = require("../controllers/category");
 const company_form  = require("../controllers/company_form");
 const other  = require("../controllers/other");
 
@@ -36,6 +37,9 @@ router.post("/getCompanyUserList", company_form.getCompanyUserList);
 router.post("/getCompanyBusinessDetail", company_form.getCompanyBusinessDetail);
 router.post("/getCompanyTypeService", company_form.getCompanyTypeService);
 router.post("/getCompanyTaxInformation", company_form.getCompanyTaxInformation);
+router.get("/getAllCategory", category.getAllCategory);
+router.get("/getAllSubCategory", category.getAllSubCategory);
+router.post("/addCategory", category.addCategory);
 router.post("/uploadFile", other.uploadFile);
 
 module.exports = {

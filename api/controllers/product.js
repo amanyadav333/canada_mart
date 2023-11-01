@@ -12,16 +12,20 @@ const addProducts = async (req, res, next) => {
         let parent_category_id = req.body.parent_category_id;
         let child_category_id = req.body.child_category_id;
         let user_id = req.body.user_id;
+        let product_code = req.body.product_code;
+        let delivery_time = req.body.delivery_time;
+        let image = req.body.image;
         let result = '';
         const schema = Joi.object().keys({
             name: Joi.string().max(100).required(),
             description: Joi.string().max(255).required(),
-            price: Joi.string().max(10).required(),
-            quantity: Joi.string().max(5).required(),
+            price: Joi.string().allow("").required(),
+            quantity: Joi.string().allow("").required(),
             is_product: Joi.string().required(),
             parent_category_id: Joi.string().required(),
-            child_category_id: Joi.string().required(),
             user_id: Joi.string().required(),
+            product_code: Joi.string().allow("").required(),
+            delivery_time: Joi.string().allow("").required(),
         });
         const { error, value } = schema.validate({
             name: req.body.name,
@@ -30,38 +34,51 @@ const addProducts = async (req, res, next) => {
             quantity: req.body.quantity,
             is_product: req.body.is_product,
             parent_category_id: req.body.parent_category_id,
-            child_category_id: req.body.child_category_id,
             user_id: req.body.user_id,
+            product_code: req.body.product_code,
+            delivery_time: req.body.delivery_time,
         }) 
         if(error){
-            res.statusCode = 401;
+            res.statusCode = 201;
             res.json({
-                status: "false",
+                status: false,
                 message: error.details[0].message
             })
         }else{
             try {
+                console.log(child_category_id);
                 var dateTime = new Date();
                 let date=dateTime.toISOString().split('T')[0] + ' '+ dateTime.toTimeString().split(' ')[0];
                 var unique_id=name+dateTime.getMilliseconds;
-                // add user
-                result =`INSERT INTO ${dbTable.products} (${products.name},${products.description},${products.price},
-                    ${products.quantity},${products.isProduct},${products.isActive},${products.created},
-                    ${products.unique_id},${products.parentCategoryId},${products.childCategoryId},${products.userId})
-                    values('${name}','${description}', '${price}', '${quantity}','${is_product}','1','${date}', 
-                    '${unique_id}','${parent_category_id}','${child_category_id}','${user_id}')`;
 
+                if(child_category_id==undefined || child_category_id==""){
+                    result =`INSERT INTO ${dbTable.products} (${products.name},${products.description},${products.price},
+                        ${products.quantity},${products.isProduct},${products.isActive},${products.created},
+                        ${products.unique_id},${products.parentCategoryId},${products.userId}
+                        ,${products.image},${products.productCode},${products.deliveryTime})
+                        values('${name}','${description}', '${price}', '${quantity}','${is_product=="true"?1:0}','1','${date}', 
+                        '${unique_id}','${parent_category_id}','${user_id}','${image}','${product_code}','${delivery_time}')`;
+    
+                }else{
+                    result =`INSERT INTO ${dbTable.products} (${products.name},${products.description},${products.price},
+                        ${products.quantity},${products.isProduct},${products.isActive},${products.created},
+                        ${products.unique_id},${products.parentCategoryId},${products.childCategoryId},${products.userId}
+                        ,${products.image},${products.productCode},${products.deliveryTime})
+                        values('${name}','${description}', '${price}', '${quantity}','${is_product=="true"?1:0}','1','${date}', 
+                        '${unique_id}','${parent_category_id}','${child_category_id}','${user_id}','${image}','${product_code}','${delivery_time}')`;    
+                }
+                
                 result = await executeQry(result);
                 res.statusCode = 200;
                 res.json({
-                    status: "true",
+                    status: true,
                     message: "Product add successfully"
                 })
             } catch (error) {
-                res.statusCode = 400;
-                console.log('*******'+error.message);        
+                res.statusCode = 401;
+                console.log('*******'+error);        
                 res.json({
-                    status: "false",
+                    status: false,
                     message: error
                 })
 

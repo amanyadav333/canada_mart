@@ -82,6 +82,10 @@ class UserTable{
 class CategoryTable{
     static id="id";
     static name="name";
+    static image="image";
+    static isProduct="is_product";
+    static isParentCategory="is_parent_category";
+    static parentCategoryId="parent_category_id";
 }
 class ProductsTable{
     static id="id";
@@ -96,6 +100,9 @@ class ProductsTable{
     static parentCategoryId="parent_category_id";
     static childCategoryId="child_category_id";
     static userId="user_id";
+    static image="image";
+    static deliveryTime="delivery_time";
+    static productCode="product_code";
 }
 
 
