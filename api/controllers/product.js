@@ -96,23 +96,68 @@ const getAllProducts = async (req, res, next) => {
             if(result.length==0){
                 res.statusCode = 201;
                 res.json({
-                    status: "false",
+                    status: false,
                     message: "No products found"
                 })
             }else{
                 res.statusCode = 200;
                 res.json({
-                    status: "true",
+                    status: true,
                     data: result
                 })
             }
         }catch(error){
-            res.statusCode = 400;
+            res.statusCode = 401;
             console.log('*******'+error.message);        
             res.json({
-                status: "false",
+                status: false,
                 message: error
             })
+        }
+    }
+}
+
+const getProductsByCategory = async (req, res, next) => {
+    if (req.method == "POST") {
+        let category_id = req.body.category_id;
+        let result = '';
+        const schema = Joi.object().keys({
+            category_id: Joi.string().required()
+        });
+        const { error, value } = schema.validate({
+            category_id: req.body.category_id
+        }) 
+        if(error){
+            res.statusCode = 201;
+            res.json({
+                status: false,
+                message: error.details[0].message
+            })
+        }else{
+            try{
+                let usr_qry = `SELECT * FROM ${dbTable.products} WHERE ${products.parentCategoryId}= '${category_id}' OR ${products.childCategoryId}= '${category_id}'`;
+                let result = await executeQry(usr_qry);
+                if(result.length==0){
+                    res.statusCode = 201;
+                    res.json({
+                        status: false,
+                        message: "No products found"
+                    })
+                }else{
+                    res.statusCode = 200;
+                    res.json({
+                        status: true,
+                        data: {data:result}
+                    })
+                }
+            }catch(error){
+                res.statusCode = 401;
+                console.log('*******'+error.message);        
+                res.json({
+                    status: false,
+                    message: error
+                })
+            }
         }
     }
 }
@@ -120,4 +165,5 @@ const getAllProducts = async (req, res, next) => {
 module.exports = {
     getAllProducts: getAllProducts,
     addProducts:addProducts,
+    getProductsByCategory:getProductsByCategory
 }

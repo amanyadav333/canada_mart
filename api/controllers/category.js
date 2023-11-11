@@ -6,7 +6,7 @@ const {uploadS3} = require("../connection/s3client");
 const getAllCategory = async (req, res, next) => {
     if (req.method == "GET") {
         try{
-            usr_qry = `SELECT * FROM ${dbTable.category} WHERE ${category.isParentCategory}= '0'`;
+            usr_qry = `SELECT * FROM ${dbTable.category} WHERE ${category.isParentCategory}= '1'`;
             let result = await executeQry(usr_qry);
             if(result.length==0){
                 res.statusCode = 201;
@@ -34,7 +34,36 @@ const getAllCategory = async (req, res, next) => {
 
 const getAllSubCategory = async (req, res, next) => {
     if (req.method == "GET") {
-        let parent_category_id = req.query.parent_category_id;
+        try{
+            usr_qry = `SELECT * FROM ${dbTable.category} WHERE ${category.isParentCategory}= '0'`;
+            let result = await executeQry(usr_qry);
+            if(result.length==0){
+                res.statusCode = 201;
+                res.json({
+                    status: false,
+                    message: "sub category not found"
+                })
+            }else{
+                res.statusCode = 200;
+                res.json({
+                    status: true,           
+                    data:{data:result}
+                })
+            }
+        }catch(error){
+            res.statusCode = 400;
+            console.log('*******'+error);        
+            res.json({
+                status: false,
+                message: error
+            })
+        }
+    }
+}
+
+const getSubCategoryByParentId = async (req, res, next) => {
+    if (req.method == "POST") {
+        let parent_category_id = req.body.parent_category_id;
 
         let result = '';
         const schema = Joi.object().keys({
@@ -141,5 +170,6 @@ const addCategory = async (req, res, next) => {
 module.exports = {
     getAllCategory: getAllCategory,
     addCategory:addCategory,
-    getAllSubCategory:getAllSubCategory
+    getAllSubCategory:getAllSubCategory,
+    getSubCategoryByParentId:getSubCategoryByParentId
 }

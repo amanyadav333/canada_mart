@@ -7,6 +7,15 @@ class DatabaseTable{
     static userManagement="UserManagement";
     static typeService="TypeService";
     static taxInformation="TaxInformation";
+    static message="Message";
+}
+
+class MessageTable{
+    static id="id";
+    static message="message";
+    static createdAt="created_at";
+    static sentUserId="sent_user_id";
+    static reciverUserId="reciver_user_id";
 }
 
 class TaxInformationTable{
@@ -114,6 +123,7 @@ module.exports = {
     bussiness:BussinessDetailTable,
     userManagement:UserManagementTable,
     typeService:TypeServiceTable,
+    messageTable:MessageTable,
     taxInformation:TaxInformationTable,
     dbTable:DatabaseTable,
 };

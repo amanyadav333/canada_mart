@@ -3,10 +3,12 @@ const express = require("express");
 const path = require('path');
 const multer = require('multer');
 const user  = require("../controllers/user");
+const message  = require("../controllers/message");
 const product  = require("../controllers/product");
 const category  = require("../controllers/category");
 const company_form  = require("../controllers/company_form");
 const other  = require("../controllers/other");
+const dashboard  = require("../controllers/dashboard");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -39,8 +41,14 @@ router.post("/getCompanyTypeService", company_form.getCompanyTypeService);
 router.post("/getCompanyTaxInformation", company_form.getCompanyTaxInformation);
 router.get("/getAllCategory", category.getAllCategory);
 router.get("/getAllSubCategory", category.getAllSubCategory);
+router.post("/getSubCategoryByParentId", category.getSubCategoryByParentId);
 router.post("/addCategory", category.addCategory);
 router.post("/uploadFile", other.uploadFile);
+router.post("/getUserList", user.getUserList);
+router.post("/sentMessage", message.sentMessage);
+router.post("/getMessage", message.getMessage);
+router.post("/getDashBoardData", dashboard.getDashBoardData);
+router.post("/getProductsByCategory", product.getProductsByCategory);
 
 module.exports = {
   "routes": router

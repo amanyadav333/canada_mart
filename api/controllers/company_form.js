@@ -244,7 +244,7 @@ const addBusinessDetail = async (req, res, next) => {
                 }
             } catch (error) {
                 res.statusCode = 401;
-                console.log('*******'+error.message);        
+                console.log('*******'+error);        
                 res.json({
                     status: false,
                     message: error.message

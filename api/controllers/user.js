@@ -279,7 +279,7 @@ const updateUser = async (req, res, next) => {
                 }
             } catch (error) {
                 res.statusCode = 400;
-                console.log('*******'+error.message);        
+                console.log('*******'+error);        
                 res.json({
                     status: false,
                     message: error
@@ -302,7 +302,7 @@ const getUserProfile = async (req, res, next) => {
             user_id: req.body.user_id,
         }) 
         if(error){
-            res.statusCode = 401;
+            res.statusCode = 201;
             res.json({
                 status: false,
                 message: error.details[0].message
@@ -322,12 +322,56 @@ const getUserProfile = async (req, res, next) => {
                     res.statusCode = 200;
                     res.json({
                         status: true,
-                        data: result
+                        data: result[0]
                     })
                 }
             }catch(error){
                 res.statusCode = 400;
-                console.log('*******'+error.message);        
+                console.log('*******'+error);        
+                res.json({
+                    status: false,
+                    message: error
+                })
+            }
+        }
+    }
+}
+
+const getUserList = async (req, res, next) => {
+    if (req.method == "POST") {
+        let user_id = req.body.user_id;
+        const schema = Joi.object().keys({
+            user_id: Joi.string().required(),
+        });
+        const { error, value } = schema.validate({
+            user_id: req.body.user_id,
+        }) 
+        if(error){
+            res.statusCode = 201;
+            res.json({
+                status: false,
+                message: error.details[0].message
+            })
+        }else{
+            try{
+                usr_qry = `SELECT * FROM ${dbTable.users} WHERE ${user.id} != '${user_id}'`;
+                let result = await executeQry(usr_qry);
+                if(result.length==0){
+                    res.statusCode = 201;
+                    res.json({
+                        status: false,
+                        message: "No user found"
+                    })
+                }else{
+                    res.statusCode = 200;
+                    res.json({
+                        status: true,
+                        data: {data:result}
+                    })
+                }
+            }catch(error){
+                res.statusCode = 400;
+                console.log('*******'+error);        
                 res.json({
                     status: false,
                     message: error
@@ -342,5 +386,6 @@ module.exports = {
     login: login,
     getUserProfile:getUserProfile,
     checkUserExist:checkUserExist,
-    updateUser:updateUser
+    updateUser:updateUser,
+    getUserList:getUserList
 }
