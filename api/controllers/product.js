@@ -49,7 +49,7 @@ const addProducts = async (req, res, next) => {
                 console.log(child_category_id);
                 var dateTime = new Date();
                 let date=dateTime.toISOString().split('T')[0] + ' '+ dateTime.toTimeString().split(' ')[0];
-                var unique_id=name+dateTime.getMilliseconds;
+                var unique_id=name+dateTime.getMilliseconds();
 
                 if(child_category_id==undefined || child_category_id==""){
                     result =`INSERT INTO ${dbTable.products} (${products.name},${products.description},${products.price},

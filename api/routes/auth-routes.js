@@ -29,7 +29,6 @@ router.post("/enquiry", other.userEnquiry);
 router.get("/getAllProducts", product.getAllProducts);
 router.get("/checkUserExist", user.checkUserExist);
 router.post("/addProducts", product.addProducts);
-router.post("/sentEmailOTP", other.sentEmailOTP);
 router.post("/updateUser", user.updateUser);
 router.post("/getUserProfile", user.getUserProfile);
 router.post("/addBusinessDetail", company_form.addBusinessDetail);

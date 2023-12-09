@@ -5,8 +5,8 @@ const path = require('path');
 
 // create S3 client 
 const s3Client = new AWS.S3({
-    accessKeyId: 'AKIA3E4KF3SX3IHXJJAC',
-    secretAccessKey: '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',
+    accessKeyId: 'AKIA3E4KF3SXTNPZUIIU',
+    secretAccessKey: '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',
     region: 'ap-south-1'
   });
 
