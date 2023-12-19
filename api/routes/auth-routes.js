@@ -47,6 +47,7 @@ router.post("/getUserList", user.getUserList);
 router.post("/sentMessage", message.sentMessage);
 router.post("/getMessage", message.getMessage);
 router.post("/getDashBoardData", dashboard.getDashBoardData);
+router.post("/getSellerDetail", dashboard.getSellerDetail);
 router.post("/getProductsByCategory", product.getProductsByCategory);
 
 module.exports = {

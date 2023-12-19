@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `BussinessDetail` (
   PRIMARY KEY (`id`),
   KEY `FK1_userID1` (`user_id`),
   CONSTRAINT `FK1_userID1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `Category` (
   PRIMARY KEY (`id`),
   KEY `parent_category_id` (`parent_category_id`),
   CONSTRAINT `FK_Category_Category` FOREIGN KEY (`parent_category_id`) REFERENCES `Category` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `Enquiry` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `Enquiry_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `Products` (
   CONSTRAINT `Products_ibfk_1` FOREIGN KEY (`parent_category_id`) REFERENCES `Category` (`id`),
   CONSTRAINT `Products_ibfk_2` FOREIGN KEY (`child_category_id`) REFERENCES `Category` (`id`),
   CONSTRAINT `Products_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `Users` (
   PRIMARY KEY (`id`),
   KEY `FK_Users_Users` (`parent_user_id`),
   CONSTRAINT `FK_Users_Users` FOREIGN KEY (`parent_user_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
